@@ -1,4 +1,4 @@
-# WH2ME (Whatsapp 2 me)
+# WH2ME (Whatsapp 2 me) - VUE Application
 
 ## Telephone prefix API (+ flags + countries)
 
