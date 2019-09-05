@@ -1,29 +1,9 @@
-# wh2me
+# WH2ME (Whatsapp 2 me)
 
-## Project setup
-```
-npm install
-```
+## API Utilizada para los prefijos telefónicos:
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+* https://restcountries.eu/rest/v2/all
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## API de Whatsapp
 
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+* https://api.whatsapp.com/send?phone=
