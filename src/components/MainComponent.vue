@@ -44,8 +44,7 @@
               name="phoneNumber"
               v-model="phoneNumber"
               id="phoneNumber"
-              placeholder="000000000"
-              pattern="[0-9]{9}"
+              pattern="\d+"
               required
             />
           </div>
