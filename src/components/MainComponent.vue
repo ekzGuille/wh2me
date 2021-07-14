@@ -69,7 +69,10 @@
 import Loading from '@/components/LoadingComponent';
 
 const API_URL = 'https://restcountries.eu/rest/v2/all';
-const WHATSAPP_URL = 'https://api.whatsapp.com/send?phone=';
+let WHATSAPP_URL = '';
+const WHATSAPP_API_URL = 'https://api.whatsapp.com/send?phone=';
+const WHATSAPP_WEB_URL = 'https://web.whatsapp.com/send?phone=';
+const WHATSAPP_MOBILE_URL = 'whatsapp://send/?phone=';
 const SPAIN_FLAG = 'https://restcountries.eu/data/esp.svg';
 const SPAIN_PREFIX = '34';
 
@@ -88,10 +91,17 @@ export default {
     phoneNumber: '',
   }),
   async mounted() {
+    if (this.isMobile()) {
+      WHATSAPP_URL = WHATSAPP_API_URL;
+    } else {
+      WHATSAPP_URL = WHATSAPP_WEB_URL;
+    }
     const { phone } = this.$route.params;
     if (phone) {
-      this.sendMessage({ prefix: SPAIN_PREFIX, phoneNumber: phone });
-      await this.$router.replace('reroute').then(() => this.$router.replace('/'));
+      this.$router.replace('reroute').then(() => {
+        this.sendMessage({ prefix: SPAIN_PREFIX, phoneNumber: phone });
+        this.$router.replace('/');
+      });
       return;
     }
     const dataJSON = await fetch(API_URL);
@@ -109,6 +119,19 @@ export default {
       const fullWhUrl = `${WHATSAPP_URL}${prefix ?? this.seletedCountry.callingCodes}${phoneNumber ?? this.phoneNumber}`;
       window.open(fullWhUrl);
       this.phoneNumber = '';
+    },
+    isMobile() {
+      return [
+        /Android/i,
+        /webOS/i,
+        /iPhone/i,
+        /iPad/i,
+        /iPod/i,
+        /BlackBerry/i,
+        /Windows Phone/i,
+      ].some((toMatchItem) => {
+        return navigator.userAgent.match(toMatchItem);
+      });
     },
   },
 };
