@@ -23,7 +23,7 @@
               </option>
             </select>
           </div>
-          <h3 class="header">Write the number ☎</h3>
+          <h3 class="header">Type the number ☎</h3>
           <div class="selectWrapper">
             <div class="flagPrefixWrapper">
               <img class="flag" :src="seletedCountry.flag" :alt="seletedCountry.alpha3Code"/>
