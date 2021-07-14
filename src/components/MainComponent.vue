@@ -4,18 +4,14 @@
       <h3 class="header">🌎 Select your country 🌏</h3>
       <div id="data" class="row">
         <form @submit.prevent="sendMessage">
-          <img
-            id="loadingGif"
-            v-if="this.countries.length === 0"
-            src="https://media.giphy.com/media/OPaGCH5CezwUE/giphy.gif"
-            alt="loading"
-          />
-          <div class="selectWrapper row">
+          <Loading v-if="this.countries.length === 0"/>
+          <div
+            v-if="this.countries.length !== 0"
+            class="selectWrapper row">
             <span>
-              <img :src="seletedCountry.flag" :alt="seletedCountry.alpha3Code" />
+              <img :src="seletedCountry.flag" :alt="seletedCountry.alpha3Code"/>
             </span>
             <select
-              v-if="this.countries.length !== 0"
               name="country"
               v-model="seletedCountry"
               id="country"
@@ -26,7 +22,8 @@
                 :key="country.numericCode"
                 :value="country"
                 :style="{ backgroundImageUrl: country.flag}"
-              >{{country.alpha3Code}} - {{country.name}}</option>
+              >{{ country.alpha3Code }} - {{ country.name }}
+              </option>
             </select>
           </div>
           <h3 class="header">Write the number 📲</h3>
@@ -50,7 +47,7 @@
           </div>
           <button type="submit" id="sendBtn">
             Open in Whatsapp
-            <img id="wh_ico" src="./../assets/wh_ico.png" alt="wh_ico" />
+            <img id="wh_ico" src="./../assets/wh_ico.png" alt="wh_ico"/>
           </button>
         </form>
       </div>
@@ -69,27 +66,37 @@
 </template>
 
 <script>
+import Loading from '@/components/LoadingComponent';
+
 const API_URL = 'https://restcountries.eu/rest/v2/all';
 const WHATSAPP_URL = 'https://api.whatsapp.com/send?phone=';
+const SPAIN_FLAG = 'https://restcountries.eu/data/esp.svg';
+const SPAIN_PREFIX = '34';
 
 export default {
   name: 'main-component',
+  components: { Loading },
   data: () => ({
     countries: [],
     seletedCountry: {
       name: 'Spain',
       alpha3Code: 'ESP',
-      callingCodes: '34',
-      flag: 'https://restcountries.eu/data/esp.svg',
+      callingCodes: SPAIN_PREFIX,
+      flag: SPAIN_FLAG,
       numericCode: '724',
     },
     phoneNumber: '',
   }),
   async mounted() {
+    const { phone } = this.$route.params;
+    if (phone) {
+      this.sendMessage({ prefix: SPAIN_PREFIX, phoneNumber: phone });
+      await this.$router.replace('reroute').then(() => this.$router.replace('/'));
+      return;
+    }
     const dataJSON = await fetch(API_URL);
     const data = await dataJSON.json();
-    this.loading = false;
-    this.countries = data.map(country => ({
+    this.countries = data.map((country) => ({
       name: country.name,
       alpha3Code: country.alpha3Code,
       callingCodes: country.callingCodes[0],
@@ -98,8 +105,8 @@ export default {
     }));
   },
   methods: {
-    sendMessage() {
-      const fullWhUrl = `${WHATSAPP_URL}${this.seletedCountry.callingCodes}${this.phoneNumber}`;
+    sendMessage({ prefix, phoneNumber }) {
+      const fullWhUrl = `${WHATSAPP_URL}${prefix ?? this.seletedCountry.callingCodes}${phoneNumber ?? this.phoneNumber}`;
       window.open(fullWhUrl);
       this.phoneNumber = '';
     },
@@ -118,6 +125,7 @@ html {
   background-size: cover;
   overflow: hidden;
 }
+
 main {
   margin: 0 auto;
   width: 35%;
@@ -129,9 +137,11 @@ main {
   padding: 20vh 2em 0 2em;
   height: 100vh;
 }
-.header{
+
+.header {
   margin-top: 1em;
 }
+
 .selectWrapper {
   display: flex;
   flex-wrap: nowrap;
@@ -145,10 +155,12 @@ main {
   margin-right: 0.5em;
   width: 100%;
 }
+
 .selectWrapper #phoneNumber {
   margin-left: 0.5em;
   width: 100%;
 }
+
 span > img {
   width: auto;
   height: 30px;
@@ -162,11 +174,6 @@ div#data {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-}
-
-img#loadingGif {
-  margin: 0 auto;
-  width: 50px;
 }
 
 div#data select {
@@ -196,6 +203,7 @@ div#data select {
 #creditos span {
   font-size: 0.8em;
 }
+
 @media only screen and (max-width: 1100px) {
   main {
     margin: 0 auto;
