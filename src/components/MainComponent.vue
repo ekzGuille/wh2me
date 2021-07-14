@@ -1,17 +1,14 @@
 <template>
   <main>
-    <div id="myApp">
+    <div class="myApp">
       <h3 class="header">🌎 Select your country 🌏</h3>
-      <div id="data" class="row">
+      <div class="data">
         <form @submit.prevent="sendMessage">
           <Loading v-if="this.countries.length === 0"/>
           <div
-            v-if="this.countries.length !== 0"
-            class="selectWrapper row">
-            <span>
-              <img :src="seletedCountry.flag" :alt="seletedCountry.alpha3Code"/>
-            </span>
+            v-if="this.countries.length !== 0">
             <select
+              class="country-selector"
               name="country"
               v-model="seletedCountry"
               id="country"
@@ -26,18 +23,24 @@
               </option>
             </select>
           </div>
-          <h3 class="header">Write the number 📲</h3>
-          <div class="selectWrapper row">
+          <h3 class="header">Write the number ☎</h3>
+          <div class="selectWrapper">
+            <div class="flagPrefixWrapper">
+              <img class="flag" :src="seletedCountry.flag" :alt="seletedCountry.alpha3Code"/>
+              <input
+                class="prefix"
+                type="text"
+                disabled
+                name="prefix"
+                id="prefix"
+                :value="`+ ${seletedCountry.callingCodes}`"
+                size="7"
+              />
+            </div>
             <input
-              type="text"
-              disabled
-              name="prefix"
-              id="prefix"
-              :value="`+ ${seletedCountry.callingCodes}`"
-              size="7"
-            />
-            <input
+              class="phone"
               type="tel"
+              placeholder="📞"
               name="phoneNumber"
               v-model="phoneNumber"
               id="phoneNumber"
@@ -45,13 +48,13 @@
               required
             />
           </div>
-          <button type="submit" id="sendBtn">
+          <button type="submit" id="sendBtn" class="btn">
             Open in Whatsapp
-            <img id="wh_ico" src="./../assets/wh_ico.png" alt="wh_ico"/>
+            <img class="btn--image" id="wh_ico" src="./../assets/wh_ico.png" alt="wh_ico"/>
           </button>
         </form>
       </div>
-      <div id="creditos">
+      <div class="credits">
         <span>
           Made by
           <a
@@ -155,10 +158,17 @@ main {
   background-color: rgba(255, 255, 255, 0.4);
 }
 
-#myApp {
+input {
+  margin: 0;
+}
+
+.myApp {
   text-align: center;
   padding: 20vh 2em 0 2em;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .header {
@@ -171,83 +181,150 @@ main {
   flex-direction: row;
   justify-content: center;
   width: 100%;
+  margin: 2em 0;
 }
 
-.selectWrapper #prefix {
+.flagPrefixWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.prefix {
   text-align: right;
   margin-right: 0.5em;
-  width: 100%;
+  width: 50%;
 }
 
-.selectWrapper #phoneNumber {
+.phone {
   margin-left: 0.5em;
-  width: 100%;
+  width: 50%;
 }
 
-span > img {
+.flag {
   width: auto;
   height: 30px;
-  margin-right: 0.25em;
-  margin-top: 0.25em;
   border: 1px solid #000;
 }
 
-div#data {
-  margin-top: 4em;
+.data {
+  margin-top: 2em;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
+  width: 80%;
 }
 
-div#data select {
+.country-selector {
   display: flex;
   width: 100%;
   margin-left: 0.25em;
 }
 
-#sendBtn {
+.btn {
   background-color: #58bd55;
   color: #fff;
   width: 100%;
 }
 
-#sendBtn img {
+.btn--image {
   width: 8px;
 }
 
-#creditos {
+.credits {
   position: fixed;
   bottom: 1.5vh;
   right: 5vw;
   display: inline-block;
   text-align: center;
-}
-
-#creditos span {
   font-size: 0.8em;
+
 }
 
-@media only screen and (max-width: 1100px) {
+@media only screen and (max-width: 1300px) {
   main {
     margin: 0 auto;
     width: 50%;
   }
 
-  div#data select {
+  .data {
+    width: 65%;
+  }
+
+  .country-selector {
+    display: flex;
+    width: 100%;
+  }
+
+}
+
+@media only screen and (max-width: 885px) {
+  main {
+    margin: 0 auto;
+    width: 75%;
+  }
+
+  .country-selector {
     display: flex;
     width: 100%;
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 550px) {
   main {
     margin: 0 auto;
-    width: 85%;
+    width: 90%;
   }
 
-  div#data select {
+  .data {
+    width: 80%;
+  }
+
+  .country-selector {
     display: flex;
     width: 100%;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  main {
+    margin: 0 auto;
+    width: 90%;
+  }
+
+  .data {
+    width: 100%;
+  }
+
+  .country-selector {
+    display: flex;
+    width: 100%;
+  }
+
+  .selectWrapper {
+    display: block;
+    width: 100%;
+  }
+
+  .flagPrefixWrapper,
+  .phone {
+    margin: 0.4em auto;
+  }
+
+  .prefix {
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0.8em;
+  }
+
+  .phone {
+    width: 100%;
+    margin-left: 0;
+  }
+
+
+  .btn {
+    margin-top: 1em;
   }
 }
 </style>
