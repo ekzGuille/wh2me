@@ -6,8 +6,8 @@
 
 ## Whatsapp API
 
-* https://api.whatsapp.com/send?phone=`prefijo+numero`
-* https://web.whatsapp.com/send?phone=`prefijo+numero`
+* https://api.whatsapp.com/send?phone=`prefijo+numero`&text=`mensaje`
+* https://web.whatsapp.com/send?phone=`prefijo+numero`&text=`mensaje`
 
 ## Deployment
 
