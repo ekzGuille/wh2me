@@ -1,13 +1,13 @@
 <template>
-  <div class="app dark">
+  <div id="mainApp" class="app dark">
     <div class="bg_wrapper">
     </div>
     <main class="main">
       <div class="container">
         <h3 class="header">🌎 Select your country 🌏</h3>
         <div class="data">
-          <form @submit.prevent="sendMessage">
-            <Loading v-if="this.countries.length === 0"/>
+          <form id="whatsappForm" @submit.prevent="sendMessage">
+            <LoadingComponent v-if="this.countries.length === 0"/>
             <div
               v-if="this.countries.length !== 0">
               <select
@@ -86,12 +86,13 @@
 </template>
 
 <script>
-import Loading from '@/components/LoadingComponent';
+
+import LoadingComponent from '@/components/LoadingComponent';
 
 const DARK = '🌚';
 const LIGHT = '🌞';
 const darkClass = 'dark';
-let app;
+let mainApp;
 
 const API_URL = 'https://restcountries.eu/rest/v2/all';
 let WHATSAPP_URL = '';
@@ -103,7 +104,7 @@ const SPAIN_PREFIX = '34';
 
 export default {
   name: 'main-component',
-  components: { Loading },
+  components: { LoadingComponent },
   data: () => ({
     countries: [],
     seletedCountry: {
@@ -118,7 +119,7 @@ export default {
     defaultTheme: LIGHT,
   }),
   async mounted() {
-    [app] = document.getElementsByClassName('app');
+    mainApp = document.getElementById('mainApp');
     if (this.isMobile()) {
       WHATSAPP_URL = WHATSAPP_API_URL;
     } else {
@@ -166,7 +167,7 @@ export default {
       } else {
         this.defaultTheme = DARK;
       }
-      app.classList.toggle(darkClass);
+      mainApp.classList.toggle(darkClass);
     },
   },
 };
