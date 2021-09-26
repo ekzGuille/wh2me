@@ -2,12 +2,12 @@
 
 ## Telephone prefix API (+ flags + countries)
 
-* https://restcountries.eu/rest/v2/all
+* https://restcountries.com/v3/all
 
 ## Whatsapp API
 
-* https://api.whatsapp.com/send?phone=`prefijo+numero`&text=`mensaje`
-* https://web.whatsapp.com/send?phone=`prefijo+numero`&text=`mensaje`
+* https://api.whatsapp.com/send?phone=+`prefijo+numero`&text=`mensaje`
+* https://web.whatsapp.com/send?phone=+`prefijo+numero`&text=`mensaje`
 
 ## Deployment
 

@@ -28,14 +28,16 @@
             <h3 class="header">Type the number ☎</h3>
             <div class="prefix-phone-wrapper">
               <div class="flag-prefix-wrapper">
-                <img class="flag" :src="seletedCountry.flag" :alt="seletedCountry.alpha3Code"/>
+                <span class="emoji-flag">{{seletedCountry.flag}}</span>
+                <!-- <img loding="lazy" class="flag"
+                  :src="seletedCountry.flag" :alt="seletedCountry.alpha3Code"/> -->
                 <input
                   class="input prefix"
                   type="text"
                   disabled
                   name="prefix"
                   id="prefix"
-                  :value="`+ ${seletedCountry.callingCodes}`"
+                  :value="seletedCountry.callingCodes"
                   size="7"
                 />
               </div>
@@ -94,13 +96,12 @@ const LIGHT = '🌞';
 const darkClass = 'dark';
 let mainApp;
 
-const API_URL = 'https://restcountries.eu/rest/v2/all';
+const API_URL = 'https://restcountries.com/v3/all';
 let WHATSAPP_URL = '';
 const WHATSAPP_API_URL = 'https://api.whatsapp.com/send?phone=';
 const WHATSAPP_WEB_URL = 'https://web.whatsapp.com/send?phone=';
 const WHATSAPP_MOBILE_URL = 'whatsapp://send/?phone=';
-const SPAIN_FLAG = 'https://restcountries.eu/data/esp.svg';
-const SPAIN_PREFIX = '34';
+const SPAIN_PREFIX = '+34';
 
 export default {
   name: 'main-component',
@@ -109,9 +110,9 @@ export default {
     countries: [],
     seletedCountry: {
       name: 'Spain',
-      alpha3Code: 'ESP',
+      alpha3Code: 'ES',
       callingCodes: SPAIN_PREFIX,
-      flag: SPAIN_FLAG,
+      flag: '🇪🇸', // 'https://restcountries.com/data/esp.svg',
       numericCode: '724',
     },
     phoneNumber: '',
@@ -136,11 +137,11 @@ export default {
     const dataJSON = await fetch(API_URL);
     const data = await dataJSON.json();
     this.countries = data.map((country) => ({
-      name: country.name,
-      alpha3Code: country.alpha3Code,
-      callingCodes: country.callingCodes[0],
+      name: country.name.common,
+      alpha3Code: country.altSpellings[0],
+      callingCodes: `${country.idd.root}${country.idd.suffixes?.join('')}`,
       flag: country.flag,
-      numericCode: country.numericCode,
+      numericCode: country.ccn3,
     }));
   },
   methods: {
@@ -227,7 +228,7 @@ export default {
 
 .container {
   text-align: center;
-  padding: 20vh 2em 0 2em;
+  padding: 20vh 1em 0 1em;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -269,6 +270,11 @@ export default {
 .message {
   width: 100%;
   margin: 1em 0;
+}
+
+.emoji-flag {
+  font-size: 3em;
+  line-height: 0em;
 }
 
 .flag {
