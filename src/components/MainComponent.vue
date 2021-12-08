@@ -49,7 +49,7 @@
                 name="phoneNumber"
                 v-model="phoneNumber"
                 id="phoneNumber"
-                pattern="\d+"
+                pattern="[0-9 \+]+"
                 required
               />
             </div>
@@ -146,7 +146,9 @@ export default {
   },
   methods: {
     sendMessage({ prefix, phoneNumber }) {
-      const fullWhUrl = `${WHATSAPP_URL}${prefix ?? this.seletedCountry.callingCodes}${phoneNumber ?? this.phoneNumber}${this.customMessage ? `&text=${this.customMessage}` : ''}`;
+      const numPrefix = prefix ?? this.seletedCountry.callingCodes;
+      const phoneNum = (phoneNumber ?? this.phoneNumber).replace(numPrefix, '').replaceAll(' ', '');
+      const fullWhUrl = `${WHATSAPP_URL}${numPrefix}${phoneNum}${this.customMessage ? `&text=${this.customMessage}` : ''}`;
       window.open(fullWhUrl);
       this.phoneNumber = '';
       this.customMessage = '';
