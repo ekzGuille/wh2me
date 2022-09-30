@@ -12,7 +12,7 @@
               v-if="this.countries.length !== 0">
               <select
                 class="country-selector"
-                v-model="seletedCountry"
+                v-model="selectedCountry"
                 id="country"
               >
                 <option value selected disabled>Country name</option>
@@ -28,16 +28,16 @@
             <h3 class="header">Type the number ☎</h3>
             <div class="prefix-phone-wrapper">
               <div class="flag-prefix-wrapper">
-                <span class="emoji-flag">{{seletedCountry.flag}}</span>
-                <!-- <img loding="lazy" class="flag"
-                  :src="seletedCountry.flag" :alt="seletedCountry.alpha3Code"/> -->
+                <span class="emoji-flag">{{ selectedCountry.flag }}</span>
+                <!-- <img loading="lazy" class="flag"
+                  :src="selectedCountry.flag" :alt="selectedCountry.alpha3Code"/> -->
                 <input
                   class="input prefix"
                   type="text"
                   disabled
                   name="prefix"
                   id="prefix"
-                  :value="seletedCountry.callingCodes"
+                  :value="selectedCountry.callingCodes"
                   size="7"
                 />
               </div>
@@ -89,7 +89,8 @@
 
 <script>
 
-import LoadingComponent from '@/components/LoadingComponent';
+// eslint-disable-next-line import/no-unresolved
+import LoadingComponent from '@/components/LoadingComponent.vue';
 
 const DARK = '🌚';
 const LIGHT = '🌞';
@@ -100,7 +101,7 @@ const API_URL = 'https://restcountries.com/v3/all';
 let WHATSAPP_URL = '';
 const WHATSAPP_API_URL = 'https://api.whatsapp.com/send?phone=';
 const WHATSAPP_WEB_URL = 'https://web.whatsapp.com/send?phone=';
-const WHATSAPP_MOBILE_URL = 'whatsapp://send/?phone=';
+// const WHATSAPP_MOBILE_URL = 'whatsapp://send/?phone=';
 const SPAIN_PREFIX = '+34';
 
 export default {
@@ -108,7 +109,7 @@ export default {
   components: { LoadingComponent },
   data: () => ({
     countries: [],
-    seletedCountry: {
+    selectedCountry: {
       name: 'Spain',
       alpha3Code: 'ES',
       callingCodes: SPAIN_PREFIX,
@@ -146,7 +147,7 @@ export default {
   },
   methods: {
     sendMessage({ prefix, phoneNumber }) {
-      const numPrefix = prefix ?? this.seletedCountry.callingCodes;
+      const numPrefix = prefix ?? this.selectedCountry.callingCodes;
       const phoneNum = (phoneNumber ?? this.phoneNumber).replace(numPrefix, '').replaceAll(' ', '');
       const fullWhUrl = `${WHATSAPP_URL}${numPrefix}${phoneNum}${this.customMessage ? `&text=${this.customMessage}` : ''}`;
       window.open(fullWhUrl);
